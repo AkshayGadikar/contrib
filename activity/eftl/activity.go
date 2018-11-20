@@ -71,12 +71,13 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	connection, err := utils.Connect(url, options, errorsChannel)
 	if err != nil {
 		logger.Errorf("connection failed: %s", err)
-		return err
+		return false,err
 	}
 	defer connection.Disconnect()
 
 	content := input.Content
-	if dest, ok := input.Dest; ok {
+	dest := input.Dest
+	if dest != nil {
 		err = connection.Publish(utils.Message{
 			"_dest":   dest,
 			"content": content,
