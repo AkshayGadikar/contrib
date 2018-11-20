@@ -17,7 +17,7 @@
         {
           "settings": {
             "method": "GET",
-            "path": "/pets"
+            "path": "/eftl"
           },
           "actions": [
             {
@@ -43,7 +43,7 @@
               "user":"",
               "password":"",
               "ca":"",
-              "content": "{\"test\": \"hello world\"}",
+              "content": "This is test message",
               "dest": "test"
             }
           }
