@@ -1,6 +1,7 @@
 package eftl
 
 import (
+	"fmt"
 	"crypto/tls"
 	"crypto/x509"
 	"io/ioutil"
@@ -50,8 +51,11 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		}
 	}
 	id := input.Id
+	fmt.Println("Id : ",id)
 	user := input.User
+	fmt.Println("user", user)
 	password := input.Password
+	fmt.Println("password", password)
 	options := &utils.Options{
 		ClientID:  id,
 		Username:  user,
@@ -60,6 +64,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	}
 
 	url := input.URL
+	fmt.Println("url :", url)
 	errorsChannel := make(chan error, 1)
 	connection, err := utils.Connect(url, options, errorsChannel)
 	if err != nil {
@@ -70,7 +75,10 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 
 	content := input.Content
 	dest := input.Dest
+	fmt.Println("content :", content)
+	fmt.Println("dest :", dest)
 	if dest != "" {
+		fmt.Println("Inside publish")
 		err = connection.Publish(utils.Message{
 			"_dest":   dest,
 			"content": content,
