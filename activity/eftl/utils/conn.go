@@ -1,19 +1,16 @@
 package utils
 
-package eftlHelpers
-
 import (
-"crypto/tls"
-"errors"
-"fmt"
-"net/url"
-"strconv"
-"sync"
-"time"
+	"crypto/tls"
+	"errors"
+	"fmt"
+	"net/url"
+	"strconv"
+	"sync"
+	"time"
 
-"github.com/gorilla/websocket"
+	"github.com/gorilla/websocket"
 )
-
 
 // Version of eFTL Go client.
 const Version = "3.3.0"

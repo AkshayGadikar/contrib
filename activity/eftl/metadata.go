@@ -1,17 +1,16 @@
 package eftl
 
-type Settings struct {}
+type Settings struct{}
 
 type Input struct {
-	URL            string `md:"url"`
-	Id             string `md:"id"`
-	User           string `md:"user"`
-	Password       string `md:"password"`
-	CA             string `md:"ca"`
-	Dest           string `md:"dest"`
-	Content        string `md:"content"`
+	URL      string `md:"url"`
+	Id       string `md:"id"`
+	User     string `md:"user"`
+	Password string `md:"password"`
+	CA       string `md:"ca"`
+	Dest     string `md:"dest"`
+	Content  string `md:"content"`
 }
-
 
 /*type Output struct {
 	PathParams  map[string]string `md:"pathParams"`

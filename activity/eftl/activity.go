@@ -10,9 +10,9 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/project-flogo/contrib/activity/eftl/utils"
 	"github.com/project-flogo/core/activity"
 	"github.com/project-flogo/core/data/metadata"
-	"github.com/project-flogo/contrib/activity/eftl/utils"
 )
 
 func init() {
@@ -20,7 +20,6 @@ func init() {
 }
 
 var activityMd = activity.ToMetadata(&Settings{}, &Input{})
-
 
 type Activity struct {
 }
@@ -40,7 +39,6 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	logger := ctx.Logger()
 	input := &Input{}
 	ctx.GetInputObject(input)
-
 
 	tlsConfig := &tls.Config{
 		InsecureSkipVerify: true,
