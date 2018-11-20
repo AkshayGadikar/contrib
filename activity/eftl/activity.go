@@ -76,7 +76,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 			"content": content,
 		})
 		if err != nil {
-			logger.Efforf("failed to publish", err)
+			logger.Errorf("failed to publish", err)
 			return false, err
 		}
 	}
