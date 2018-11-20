@@ -21,7 +21,7 @@
           },
           "actions": [
             {
-              "id": "microgateway:eftl"
+              "id": "microgateway:Pets"
             }
           ]
         }
@@ -30,7 +30,7 @@
   ],
   "resources": [
     {
-      "id": "microgateway:eftl",
+      "id": "microgateway:Pets",
       "compressed": false,
       "data": {
         "name": "eftl",
@@ -38,7 +38,7 @@
           {
             "service": "eftlService",
             "input": {
-              "url": "ws://localhost:9191/channel",
+              "url": "ws://localhost:9000/channel",
               "id": "flogo",
               "user":"",
               "password":"",
@@ -65,9 +65,9 @@
     {
       "ref": "github.com/project-flogo/microgateway",
       "settings": {
-        "uri": "microgateway:eftl"
+        "uri": "microgateway:Pets"
       },
-      "id": "microgateway:eftl",
+      "id": "microgateway:Pets",
       "metadata": null
     }
   ]
