@@ -1,18 +1,11 @@
 package eftl
 
 import (
-	//"bytes"
 	"crypto/tls"
-	//"encoding/json"
-	//"io"
+	"crypto/x509"
 	"io/ioutil"
-	//"net/http"
-	//"net/url"
-	//"strings"
-
 	"github.com/project-flogo/contrib/activity/eftl/utils"
 	"github.com/project-flogo/core/activity"
-	//"github.com/project-flogo/core/data/metadata"
 )
 
 func init() {
@@ -70,14 +63,14 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	errorsChannel := make(chan error, 1)
 	connection, err := utils.Connect(url, options, errorsChannel)
 	if err != nil {
-		logger.Errorf("connection failed: %s", err)
+		logger.Errorf("connection failed", err)
 		return false,err
 	}
 	defer connection.Disconnect()
 
 	content := input.Content
 	dest := input.Dest
-	if dest != nil {
+	if dest != "" {
 		err = connection.Publish(utils.Message{
 			"_dest":   dest,
 			"content": content,
