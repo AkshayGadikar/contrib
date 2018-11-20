@@ -16,6 +16,8 @@
       "handlers": [
         {
           "settings": {
+            "method": "GET",
+            "path": "/pets"
           },
           "actions": [
             {
