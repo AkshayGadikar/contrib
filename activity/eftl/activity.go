@@ -1,18 +1,18 @@
 package eftl
 
 import (
-	"bytes"
+	//"bytes"
 	"crypto/tls"
-	"encoding/json"
-	"io"
+	//"encoding/json"
+	//"io"
 	"io/ioutil"
-	"net/http"
-	"net/url"
-	"strings"
+	//"net/http"
+	//"net/url"
+	//"strings"
 
 	"github.com/project-flogo/contrib/activity/eftl/utils"
 	"github.com/project-flogo/core/activity"
-	"github.com/project-flogo/core/data/metadata"
+	//"github.com/project-flogo/core/data/metadata"
 )
 
 func init() {
@@ -45,10 +45,10 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	}
 	ca := input.CA
 	if ca != "" {
-		certificate, err := ioutil.ReadFile(ca.(string))
+		certificate, err := ioutil.ReadFile(ca)
 		if err != nil {
 			logger.Errorf("can't open certificate", err)
-			return err
+			return false,err
 		}
 		pool := x509.NewCertPool()
 		pool.AppendCertsFromPEM(certificate)
