@@ -44,7 +44,7 @@
               "password":"",
               "ca":"",
               "content": "This is test message",
-              "dest": "test"
+              "dest": "sample"
             }
           }
         ],
