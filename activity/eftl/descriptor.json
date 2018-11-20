@@ -1,0 +1,46 @@
+{
+  "name": "eftl",
+  "type": "flogo:activity",
+  "version": "0.0.1",
+  "title": "EFTL Activity",
+  "description": "Invokes a EFTL activity",
+  "homepage": "https://github.com/prject-flogo/contrib/activity/eftl",
+  "settings": [],
+  "input": [
+    {
+    "name": "content",
+    "type": "any",
+    "required": true
+    },
+    {
+    "name": "dest",
+    "type": "string",
+    "required": true
+    },
+    {
+    "name": "url",
+    "type": "string",
+    "required": true
+    },
+    {
+    "name": "id",
+    "type": "string",
+    "required": true
+    },
+    {
+    "name": "user",
+    "type": "string",
+    "required": false
+    },
+    {
+    "name": "password",
+    "type": "string",
+    "required": false
+    },
+    {
+    "name": "ca",
+    "type": "string",
+    "required": false
+    }
+  ]
+}

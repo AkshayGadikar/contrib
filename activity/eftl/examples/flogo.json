@@ -1,0 +1,74 @@
+{
+  "name": "eftl",
+  "type": "flogo:app",
+  "version": "1.0.0",
+  "description": "This is a EFTL Activity.",
+  "properties": null,
+  "channels": null,
+  "triggers": [
+    {
+      "name": "flogo-rest",
+      "id": "MyProxy",
+      "ref": "github.com/project-flogo/contrib/trigger/rest",
+      "settings": {
+        "port": "9096"
+      },
+      "handlers": [
+        {
+          "settings": {
+            "method": "GET",
+            "path": "/pets"
+          },
+          "actions": [
+            {
+              "id": "microgateway:eftl"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "id": "microgateway:eftl",
+      "compressed": false,
+      "data": {
+        "name": "eftl",
+        "steps": [
+          {
+            "service": "eftlService",
+            "input": {
+              "url": "ws://localhost:9191/channel",
+              "id": "flogo",
+              "user":"",
+              "password":"",
+              "ca":"",
+              "content": "{\"test\": \"hello world\"}",
+              "dest": "test"
+            }
+          }
+        ],
+        "responses": [],
+        "services": [
+          {
+            "name": "eftlService",
+            "description": "Invoking EFTL Activity Service",
+            "ref": "github.com/project-flogo/contib/activity/eftl",
+            "settings": {
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "actions": [
+    {
+      "ref": "github.com/project-flogo/microgateway",
+      "settings": {
+        "uri": "microgateway:eftl"
+      },
+      "id": "microgateway:eftl",
+      "metadata": null
+    }
+  ]
+}
