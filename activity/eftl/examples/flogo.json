@@ -16,12 +16,10 @@
       "handlers": [
         {
           "settings": {
-            "method": "GET",
-            "path": "/pets"
           },
           "actions": [
             {
-              "id": "microgateway:Pets"
+              "id": "microgateway:eftl"
             }
           ]
         }
@@ -30,7 +28,7 @@
   ],
   "resources": [
     {
-      "id": "microgateway:Pets",
+      "id": "microgateway:eftl",
       "compressed": false,
       "data": {
         "name": "eftl",
@@ -53,7 +51,7 @@
           {
             "name": "eftlService",
             "description": "Invoking EFTL Activity Service",
-            "ref": "github.com/project-flogo/contib/activity/eftl",
+            "ref": "github.com/project-flogo/contrib/activity/eftl",
             "settings": {
             }
           }
@@ -65,9 +63,9 @@
     {
       "ref": "github.com/project-flogo/microgateway",
       "settings": {
-        "uri": "microgateway:Pets"
+        "uri": "microgateway:eftl"
       },
-      "id": "microgateway:Pets",
+      "id": "microgateway:eftl",
       "metadata": null
     }
   ]
