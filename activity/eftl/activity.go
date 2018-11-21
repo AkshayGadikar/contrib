@@ -82,7 +82,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		fmt.Println("Inside publish")
 		err = connection.Publish(utils.Message{
 			"_dest":   dest,
-			"content": []byte(content),
+			"content": content,
 		})
 		if err != nil {
 			logger.Errorf("failed to publish", err)
