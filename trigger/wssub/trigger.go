@@ -31,6 +31,7 @@ type Trigger struct {
 	wsconn   *websocket.Conn
 	settings *Settings
 	logger   log.Logger
+	config   *trigger.Config
 }
 
 // New implements trigger.Factory.New
@@ -41,7 +42,7 @@ func (*Factory) New(config *trigger.Config) (trigger.Trigger, error) {
 		return nil, err
 	}
 
-	return &Trigger{settings: s}, nil
+	return &Trigger{settings: s, config:config}, nil
 }
 
 //Initialize
@@ -65,7 +66,7 @@ func (t *Trigger) Initialize(ctx trigger.InitContext) error {
 			_, message, err := t.wsconn.ReadMessage()
 			fmt.Println("Message received :", message)
 			if err != nil {
-				log.Errorf("error while reading websocket message: %s", err)
+				fmt.Errorf("error while reading websocket message: %s", err)
 				break
 			}
 
@@ -74,7 +75,7 @@ func (t *Trigger) Initialize(ctx trigger.InitContext) error {
 				out.Content = message
 				_, err := handler.Handle(context.Background(), out)
 				if err != nil {
-					log.Errorf("Run action  failed [%s] ", err)
+					fmt.Errorf("Run action  failed [%s] ", err)
 				}
 
 			}
