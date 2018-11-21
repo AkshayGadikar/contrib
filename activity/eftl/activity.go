@@ -93,7 +93,12 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 }
 
 func getContent(inputMap map[string]interface{}) string{
-	for key, _ := range inputMap {
-		return string(key)
+	var data string
+	if inputMap == nil{
+		return "{\"Error\": \"Input payload not provided\"}"
 	}
+	for key, _ := range inputMap {
+		data = key
+	}
+	return data
 }
