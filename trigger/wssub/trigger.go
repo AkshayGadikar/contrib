@@ -62,6 +62,9 @@ func (t *Trigger) Initialize(ctx trigger.InitContext) error {
 	}
 	t.wsconn = conn
 	err = run(t)
+	if err != nil {
+		return fmt.Errorf("error %s",err)
+	}
 	return nil
 }
 
