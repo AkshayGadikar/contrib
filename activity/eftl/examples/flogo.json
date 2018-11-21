@@ -43,7 +43,7 @@
               "user":"",
               "password":"",
               "ca":"",
-              "content": "This is test message",
+              "content": "=$.payload",
               "dest": "sample"
             }
           }
