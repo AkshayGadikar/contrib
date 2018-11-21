@@ -70,14 +70,13 @@ func (t *Trigger) Initialize(ctx trigger.InitContext) error {
 				break
 			}
 
-			for _, handler := range t.config.Handlers {
+			for _, handler := range ctx.GetHandlers() {
 				out := &Output{}
 				out.Content = message
 				_, err := handler.Handle(context.Background(), out)
 				if err != nil {
 					fmt.Errorf("Run action  failed [%s] ", err)
 				}
-
 			}
 		}
 		t.logger.Infof("stopped listening to websocket endpoint")
