@@ -1,7 +1,7 @@
 package wssub
 
 import (
-	"context"
+	//"context"
 	"fmt"
 
 	"github.com/project-flogo/core/trigger"
