@@ -43,7 +43,7 @@
               "user":"",
               "password":"",
               "ca":"",
-              "content": "=$.payload",
+              "content": "=$.payload.content",
               "dest": "sample"
             }
           }
