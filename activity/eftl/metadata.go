@@ -9,7 +9,7 @@ type Input struct {
 	Password string `md:"password"`
 	CA       string `md:"ca"`
 	Dest     string `md:"dest"`
-	Content  string `md:"content"`
+	Content  map[string]interface{} `md:"content"`
 }
 
 
@@ -32,7 +32,7 @@ func (o *Input) FromMap(values map[string]interface{}) error {
 	o.Password = values["password"].(string)
 	o.CA = values["ca"].(string)
 	o.Dest = values["dest"].(string)
-	o.Content = values["content"].(string)
+	o.Content = values["content"].(map[string]interface{})
 	return nil
 }
 /*type Output struct {
