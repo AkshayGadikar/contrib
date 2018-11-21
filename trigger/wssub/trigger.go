@@ -61,15 +61,12 @@ func (t *Trigger) Initialize(ctx trigger.InitContext) error {
 		return fmt.Errorf("error while connecting to websocket endpoint[%s] - %s", url, err)
 	}
 	t.wsconn = conn
-	go func() {
-		for {
-			_, message, err := conn.ReadMessage()
-			if err != nil {
-				fmt.Println("Read error", err)
-				return
-			}
-			fmt.Println("Received:", string(message))
-		}
+	err = run(t)
+	return nil
+}
+
+func run(t *Trigger) error {
+	/*go func() {
 		/*for {
 			_, message, err := t.wsconn.ReadMessage()
 			fmt.Println("Message received :", message)
@@ -86,8 +83,18 @@ func (t *Trigger) Initialize(ctx trigger.InitContext) error {
 					fmt.Errorf("Run action  failed [%s] ", err)
 				}
 			}
-		}*/
+		}
 		//t.logger.Infof("stopped listening to websocket endpoint")
+	}()*/
+	go func() {
+		for {
+			_, message, err := t.wsconn.ReadMessage()
+			if err != nil {
+				fmt.Println("Read error", err)
+				return
+			}
+			fmt.Println("Received:", string(message))
+		}
 	}()
 	return nil
 }
