@@ -74,6 +74,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 	defer connection.Disconnect()
 
 	content := getContent(input.Content)
+
 	dest := input.Dest
 	fmt.Println("content :", content)
 	fmt.Println("dest :", dest)
@@ -81,7 +82,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		fmt.Println("Inside publish")
 		err = connection.Publish(utils.Message{
 			"_dest":   dest,
-			"content": content,
+			"content": []byte(content),
 		})
 		if err != nil {
 			logger.Errorf("failed to publish", err)
