@@ -14,7 +14,7 @@ import (
 
 const (
 	// PingInterval interval between two consecutive client ping calls to server
-	PingInterval time.Duration = 2
+	PingInterval time.Duration = 100
 )
 
 var (

@@ -64,7 +64,7 @@ func (t *Trigger) Initialize(ctx trigger.InitContext) error {
 	go func() {
 		for {
 			_, message, err := t.wsconn.ReadMessage()
-			fmt.Println("Message received :", message)
+			fmt.Println("Message received :", string(message))
 			if err != nil {
 				fmt.Errorf("error while reading websocket message: %s", err)
 				break
@@ -83,30 +83,6 @@ func (t *Trigger) Initialize(ctx trigger.InitContext) error {
 	}()
 	return nil
 }
-
-/*func run(t *Trigger) error {
-	go func() {
-		for {
-			_, message, err := t.wsconn.ReadMessage()
-			fmt.Println("Message received :", message)
-			if err != nil {
-				fmt.Errorf("error while reading websocket message: %s", err)
-				break
-			}
-
-			for _, handler := range ctx.GetHandlers() {
-				out := &Output{}
-				out.Content = message
-				_, err := handler.Handle(context.Background(), out)
-				if err != nil {
-					fmt.Errorf("Run action  failed [%s] ", err)
-				}
-			}
-		}
-		t.logger.Infof("stopped listening to websocket endpoint")
-	}()
-	return nil
-}*/
 
 
 func (t *Trigger) Start() error {
