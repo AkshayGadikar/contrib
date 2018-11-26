@@ -1,7 +1,7 @@
 package wssub
 
 import (
-	//"context"
+	"context"
 	"fmt"
 
 	"github.com/project-flogo/core/trigger"
@@ -61,14 +61,6 @@ func (t *Trigger) Initialize(ctx trigger.InitContext) error {
 		return fmt.Errorf("error while connecting to websocket endpoint[%s] - %s", url, err)
 	}
 	t.wsconn = conn
-	err = run(t)
-	if err != nil {
-		return fmt.Errorf("error %s",err)
-	}
-	return nil
-}
-
-func run(t *Trigger) error {
 	go func() {
 		for {
 			_, message, err := t.wsconn.ReadMessage()
@@ -91,6 +83,30 @@ func run(t *Trigger) error {
 	}()
 	return nil
 }
+
+/*func run(t *Trigger) error {
+	go func() {
+		for {
+			_, message, err := t.wsconn.ReadMessage()
+			fmt.Println("Message received :", message)
+			if err != nil {
+				fmt.Errorf("error while reading websocket message: %s", err)
+				break
+			}
+
+			for _, handler := range ctx.GetHandlers() {
+				out := &Output{}
+				out.Content = message
+				_, err := handler.Handle(context.Background(), out)
+				if err != nil {
+					fmt.Errorf("Run action  failed [%s] ", err)
+				}
+			}
+		}
+		t.logger.Infof("stopped listening to websocket endpoint")
+	}()
+	return nil
+}*/
 
 
 func (t *Trigger) Start() error {
