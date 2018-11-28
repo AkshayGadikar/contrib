@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
+	"strconv"
 	"github.com/project-flogo/core/trigger"
 	"github.com/project-flogo/core/action"
 	"github.com/project-flogo/core/support/log"
