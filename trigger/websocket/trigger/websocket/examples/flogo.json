@@ -9,7 +9,7 @@
     {
       "name": "tibco-wssub",
       "id": "flogo-WSMessageTrigger",
-      "ref": "github.com/project-flogo/contrib/trigger/wssub",
+      "ref": "github.com/project-flogo/contrib/trigger/websocket/trigger/websocket",
       "settings": {
         "port": "9096"
       },
