@@ -151,7 +151,11 @@ func newActionHandler(rt *Trigger, handler trigger.Handler, mode string) httprou
 					} else {
 						if mode == "2" {
 							out := &Output{}
+							out.QueryParams = make(map[string]string)
+							out.PathParams = make(map[string]string)
+							out.Headers = make(map[string]string)
 							out.Content = message
+							out.WSconnection = conn
 							_, err := handler.Handle(context.Background(), out)
 							if err != nil {
 								fmt.Errorf("Run action  failed [%s] ", err)
@@ -165,94 +169,3 @@ func newActionHandler(rt *Trigger, handler trigger.Handler, mode string) httprou
 
 	}
 }
-
-
-		/*out := &Output{}
-
-		out.PathParams = make(map[string]string)
-		for _, param := range ps {
-			out.PathParams[param.Key] = param.Value
-		}
-
-		queryValues := r.URL.Query()
-		out.QueryParams = make(map[string]string, len(queryValues))
-		out.Headers = make(map[string]string, len(r.Header))
-
-		for key, value := range r.Header {
-			out.Headers[key] = strings.Join(value, ",")
-		}
-
-		for key, value := range queryValues {
-			out.QueryParams[key] = strings.Join(value, ",")
-		}
-
-		// Check the HTTP Header Content-Type
-		contentType := r.Header.Get("Content-Type")
-		switch contentType {
-		case "application/x-www-form-urlencoded":
-			buf := new(bytes.Buffer)
-			buf.ReadFrom(r.Body)
-			s := buf.String()
-			m, err := url.ParseQuery(s)
-			content := make(map[string]interface{}, 0)
-			if err != nil {
-				rt.logger.Errorf("Error while parsing query string: %s", err.Error())
-				http.Error(w, err.Error(), http.StatusBadRequest)
-			}
-			for key, val := range m {
-				if len(val) == 1 {
-					content[key] = val[0]
-				} else {
-					content[key] = val[0]
-				}
-			}
-
-			out.Content = content
-		default:
-			var content interface{}
-			err := json.NewDecoder(r.Body).Decode(&content)
-			if err != nil {
-				switch {
-				case err == io.EOF:
-				// empty body
-				case err != nil:
-					http.Error(w, err.Error(), http.StatusBadRequest)
-					return
-				}
-			}
-			out.Content = content
-		}
-
-		if (mode == "1"){
-			//acts as server....display the details received from client
-		}
-		results, err := handler.Handle(context.Background(), out)
-
-		reply := &Reply{}
-		reply.FromMap(results)
-
-		if err != nil {
-			rt.logger.Debugf("Error: %s", err.Error())
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-
-		if reply.Data != nil {
-			w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-			if reply.Code == 0 {
-				reply.Code = 200
-			}
-			w.WriteHeader(reply.Code)
-			if err := json.NewEncoder(w).Encode(reply.Data); err != nil {
-				log.Error(err)
-			}
-			return
-		}
-
-		if reply.Code > 0 {
-			w.WriteHeader(reply.Code)
-		} else {
-			w.WriteHeader(http.StatusOK)
-		}
-	}
-}*/
