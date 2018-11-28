@@ -2,8 +2,11 @@ package websocket
 
 import (
 	"crypto/md5"
+	"crypto/tls"
+	"crypto/x509"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"os"

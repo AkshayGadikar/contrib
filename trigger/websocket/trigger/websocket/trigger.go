@@ -9,6 +9,7 @@ import (
 	"github.com/project-flogo/core/support/log"
 	"github.com/project-flogo/core/data/metadata"
 	"github.com/gorilla/websocket"
+	"github.com/julienschmidt/httprouter"
 )
 
 

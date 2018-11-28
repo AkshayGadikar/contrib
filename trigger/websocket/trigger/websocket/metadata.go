@@ -28,10 +28,10 @@ func (o *Output) ToMap() map[string]interface{} {
 }
 
 func (o *Output) FromMap(values map[string]interface{}) error {
-	o.PathParams = values["pathParams"]
-	o.QueryParams = values["queryParams"]
+	o.PathParams = values["pathParams"].(map[string]string)
+	o.QueryParams = values["queryParams"].(map[string]string)
 	o.Content = values["content"]
-	o.Headers = values["headers"]
+	o.Headers = values["headers"].(map[string]string)
 	o.WSconnection = values["wsconnection"]
 	return nil
 }
