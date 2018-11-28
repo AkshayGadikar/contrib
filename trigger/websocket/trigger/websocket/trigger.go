@@ -3,6 +3,7 @@ package websocket
 import (
 	"context"
 	"fmt"
+	"net/http"
 
 	"github.com/project-flogo/core/trigger"
 	"github.com/project-flogo/core/action"
@@ -144,7 +145,6 @@ func newActionHandler(rt *Trigger, handler trigger.Handler, mode string) httprou
 					fmt.Println("read error", err)
 					break
 				}
-				for _, handler= range ctx.GetHandlers() {
 					if mode == "1" {
 						messageToLog := fmt.Sprintf("Received message(%s) from the client", message)
 						fmt.Println(messageToLog)
@@ -158,7 +158,7 @@ func newActionHandler(rt *Trigger, handler trigger.Handler, mode string) httprou
 							}
 						}
 					}
-				}
+
 			}
 			rt.logger.Infof("stopped listening to websocket endpoint")
 		}

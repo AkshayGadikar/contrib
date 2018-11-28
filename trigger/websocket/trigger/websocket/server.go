@@ -2,11 +2,11 @@ package websocket
 
 import (
 	"crypto/md5"
-	"crypto/tls"
 	"crypto/x509"
+	"io/ioutil"
+	"crypto/tls"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"net"
 	"net/http"
 	"os"
@@ -71,7 +71,6 @@ func (s *Server) Start() error {
 	s.serverInstanceID = fmt.Sprintf("%x", md5.Sum([]byte(hostname+addr)))
 
 	if s.enableTLS {
-		// log.Debugf("TLS is enabled for the trigger instance - %v%v", s.serverInstanceID, addr)
 		//TLS is enabled, load server certificate & key files
 		cer, err := tls.LoadX509KeyPair(s.serverCert, s.serverKey)
 		if err != nil {
@@ -81,7 +80,6 @@ func (s *Server) Start() error {
 
 		var config *tls.Config
 		if s.enableClientAuth {
-			log.Debugf("TLS with client AUTH is enabled for the trigger instance - %v%v", s.serverInstanceID, addr)
 			caCertPool, err := getCerts(s.trustStore)
 			if err != nil {
 				fmt.Printf("Error while loading client trust store - %v", err)
@@ -93,7 +91,6 @@ func (s *Server) Start() error {
 				ClientCAs:  caCertPool}
 			config.BuildNameToCertificate()
 		} else {
-			log.Debugf("TLS is enabled for the trigger instance - %v%v", s.serverInstanceID, addr)
 			config = &tls.Config{Certificates: []tls.Certificate{cer}}
 		}
 
@@ -104,7 +101,6 @@ func (s *Server) Start() error {
 		}
 		s.listener = listener
 	} else {
-		log.Debugf("TLS is not enabled for the trigger instance - %v at port %v", s.serverInstanceID, addr)
 		listener, err := net.Listen("tcp", addr)
 		if err != nil {
 			return err
@@ -114,13 +110,6 @@ func (s *Server) Start() error {
 
 	s.serverGroup = &sync.WaitGroup{}
 	s.clientsGroup = make(chan bool, 50000)
-
-	//if s.ErrorLog == nil {
-	//    if r, ok := s.Handler.(ishttpwayrouter); ok {
-	//        s.ErrorLog = log.New(&internalServerLoggerWriter{r.(*Router).Logger}, "", 0)
-	//    }
-	//}
-	//
 
 	s.Handler = &serverHandler{s.Handler, s.clientsGroup, s.serverInstanceID}
 
@@ -207,4 +196,35 @@ func (sh *serverHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("X-Server-Instance-Id", sh.serverInstanceID)
 
 	sh.handler.ServeHTTP(w, r)
+}
+
+func getCerts(trustStore string) (*x509.CertPool, error) {
+	certPool := x509.NewCertPool()
+	fileInfo, err := os.Stat(trustStore)
+	if err != nil {
+		return certPool, fmt.Errorf("Truststore [%s] does not exist", trustStore)
+	}
+	switch mode := fileInfo.Mode(); {
+	case mode.IsDir():
+		break
+	case mode.IsRegular():
+		return certPool, fmt.Errorf("Truststore [%s] is not a directory.  Must be a directory containing trusted certificates in PEM format",
+			trustStore)
+	}
+	trustedCertFiles, err := ioutil.ReadDir(trustStore)
+	if err != nil || len(trustedCertFiles) == 0 {
+		return certPool, fmt.Errorf("Failed to read trusted certificates from [%s]  Must be a directory containing trusted certificates in PEM format", trustStore)
+	}
+	for _, trustCertFile := range trustedCertFiles {
+		fqfName := fmt.Sprintf("%s%c%s", trustStore, os.PathSeparator, trustCertFile.Name())
+		trustCertBytes, err := ioutil.ReadFile(fqfName)
+		if err != nil {
+			fmt.Errorf("Failed to read trusted certificate [%s] ... continueing", trustCertFile.Name())
+		}
+		certPool.AppendCertsFromPEM(trustCertBytes)
+	}
+	if len(certPool.Subjects()) < 1 {
+		return certPool, fmt.Errorf("Failed to read trusted certificates from [%s]  After processing all files in the directory no valid trusted certs were found", trustStore)
+	}
+	return certPool, nil
 }
