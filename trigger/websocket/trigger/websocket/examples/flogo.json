@@ -11,7 +11,12 @@
       "id": "flogo-WSMessageTrigger",
       "ref": "github.com/project-flogo/contrib/trigger/websocket/trigger/websocket",
       "settings": {
-        "port": "9096"
+        "port": "9096",
+        "enableTLS": false,
+        "serverCert": "",
+        "serverKey": "",
+        "enableClientAuth": false,
+        "trustStore": ""
       },
       "handlers": [
         {
@@ -19,11 +24,6 @@
             "method": "GET",
             "path": "/ws",
             "mode": "1",
-            "enableTLS": false,
-            "serverCert": "",
-            "serverKey": "",
-            "enableClientAuth": false,
-            "trustStore": "",
             "basicAuthFile": ""
           },
           "actions": [
