@@ -1,15 +1,7 @@
 package wsproxy
 
 import (
-	"bytes"
-	"crypto/tls"
-	"encoding/json"
-	"io"
-	"io/ioutil"
-	"net/http"
-	"net/url"
-	"strings"
-
+	"github.com/gorilla/websocket"
 	"github.com/project-flogo/core/activity"
 	"github.com/project-flogo/core/data/metadata"
 )
