@@ -1,0 +1,80 @@
+{
+  "name": "flogo-websocket",
+  "type": "flogo:trigger",
+  "version": "0.0.1",
+  "title": "Websocket Trigger",
+  "description": "Support for websocket streams",
+  "homepage": "https://github.com/prject-flogo/contrib/tree/master/trigger/websocket/trigger/websocket",
+  "settings": [
+    {
+      "name": "port",
+      "type": "integer",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "params",
+      "type": "params"
+    },
+    {
+      "name": "pathParams",
+      "type": "params"
+    },
+    {
+      "name": "queryParams",
+      "type": "params"
+    },
+    {
+      "name": "content",
+      "type": "any"
+    },
+    {
+      "name": "wsconnection",
+      "type": "any"
+    }
+  ],
+  "handler": {
+    "settings": [
+      {
+        "name": "method",
+        "type": "string",
+        "required" : true,
+        "allowed" : ["GET", "POST", "PUT", "PATCH", "DELETE"]
+      },
+      {
+        "name": "path",
+        "type": "string",
+        "required" : true
+      },
+      {
+        "name": "mode",
+        "type": "string"
+      },
+      {
+        "name": "enableTLS",
+        "type": "boolean"
+      },
+      {
+        "name": "serverCert",
+        "type": "string"
+      },
+      {
+        "name": "serverKey",
+        "type": "string"
+      },
+      {
+        "name": "enableClientAuth",
+        "type": "string"
+      },
+      {
+        "name": "trustStore",
+        "type": "string"
+      },
+      {
+        "name": "basicAuthFile",
+        "type": "string"
+      }
+    ]
+  }
+}

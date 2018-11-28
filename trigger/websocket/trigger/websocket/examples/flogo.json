@@ -1,0 +1,39 @@
+{
+  "name": "wstrigger",
+  "type": "flogo:app",
+  "version": "1.0.0",
+  "description": "This is a Web Socket Trigger",
+  "properties": null,
+  "channels": null,
+  "triggers": [
+    {
+      "name": "tibco-wssub",
+      "id": "flogo-WSMessageTrigger",
+      "ref": "github.com/project-flogo/contrib/trigger/wssub",
+      "settings": {
+        "port": "9096"
+      },
+      "handlers": [
+        {
+          "settings": {
+            "method": "GET",
+            "path": "/ws",
+            "mode": "1",
+            "enableTLS": false,
+            "serverCert": "",
+            "serverKey": "",
+            "enableClientAuth": false,
+            "trustStore": "",
+            "basicAuthFile": ""
+          },
+          "actions": [
+          ]
+        }
+      ]
+    }
+  ],
+  "resources": [
+  ],
+  "actions": [
+  ]
+}
