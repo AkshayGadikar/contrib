@@ -149,7 +149,7 @@ func startProxyClient(wsp *WSProxy) error {
 		if websocket.IsUnexpectedCloseError(e, websocket.CloseNormalClosure, websocket.CloseAbnormalClosure) {
 			fmt.Errorf(errMessageTemplate, e.Code, e.Text)
 		} else {
-			fmt.Debugf(infoMessageTemplate, e.Code, e.Text)
+			fmt.Errorf(infoMessageTemplate, e.Code, e.Text)
 		}
 	}
 

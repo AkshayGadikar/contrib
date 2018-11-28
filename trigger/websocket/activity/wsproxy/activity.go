@@ -53,7 +53,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		clientConn:a.settings.WSconnection,
 		backendURL:a.settings.Uri,
 	}
-	if a.settings.maxConnections == ""{
+	if a.settings.maxConnections == nil{
 		wspService.maxConnections = defaultMaxConnections
 	}else{
 		wspService.maxConnections = a.settings.maxConnections
