@@ -1,6 +1,8 @@
 package wsproxy
 
 import (
+	"strconv"
+
 	"github.com/gorilla/websocket"
 	"github.com/project-flogo/core/activity"
 	"github.com/project-flogo/core/data/metadata"
@@ -50,13 +52,17 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 
 	wspService := &WSProxy{
 		serviceName:   ctx.Name(),
-		clientConn:a.settings.WSconnection,
+		clientConn:a.settings.WSconnection.(*websocket.Conn),
 		backendURL:a.settings.Uri,
 	}
-	if a.settings.maxConnections == nil{
+	if a.settings.maxConnections == ""{
 		wspService.maxConnections = defaultMaxConnections
 	}else{
-		wspService.maxConnections = a.settings.maxConnections
+		wspService.maxConnections, err = strconv.Atoi(a.settings.maxConnections)
+		if err != nil{
+			return false,err
+		}
+
 	}
 
 	// start proxy client as a goroutine
