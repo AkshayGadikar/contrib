@@ -1,0 +1,28 @@
+{
+  "name": "flogo-websocket",
+  "type": "flogo:activity",
+  "version": "0.0.1",
+  "title": "Websocket Invoke",
+  "description": "Support for websocket streams",
+  "homepage": "https://github.com/prject-flogo/contrib/tree/master/trigger/websocket/activity/wsproxy",
+  "settings": [
+    {
+      "name": "wsconnection",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "url",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "maxconnections",
+      "type": "int"
+    }
+  ],
+  "input": [
+  ],
+  "output": [
+  ]
+}

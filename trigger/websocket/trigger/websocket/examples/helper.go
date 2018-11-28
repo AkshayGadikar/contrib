@@ -22,7 +22,7 @@ var (
 	client = flag.Bool("client", false, "run the client")
 	connections map[*websocket.Conn]bool
 	name      = flag.String("name", "CLIENTNAME", "instance name")
-	url       = flag.String("url", "ws://localhost:8000/ws", "server url to connect")
+	url       = flag.String("url", "ws://localhost:9096/ws", "server url to connect")
 )
 
 func main() {
