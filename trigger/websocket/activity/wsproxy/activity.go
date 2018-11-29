@@ -2,7 +2,7 @@ package wsproxy
 
 import (
 	"strconv"
-
+	"fmt"
 	"github.com/gorilla/websocket"
 	"github.com/project-flogo/core/activity"
 	"github.com/project-flogo/core/data/metadata"
