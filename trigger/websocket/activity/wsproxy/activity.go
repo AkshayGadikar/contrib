@@ -24,7 +24,7 @@ type WSProxy struct {
 	clientConn     *websocket.Conn
 }
 
-var activityMd = activity.ToMetadata(&Settings{})
+var activityMd = activity.ToMetadata(&Settings{}, &Input{}, &Output{})
 
 func New(ctx activity.InitContext) (activity.Activity, error) {
 	s := &Settings{}
