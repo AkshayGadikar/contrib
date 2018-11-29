@@ -58,7 +58,7 @@
             "ref": "github.com/project-flogo/contrib/trigger/websocket/activity/wsproxy",
             "settings": {
               "uri": "ws://localhost:8080/ws",
-              "maxConnections": "2"
+              "maxconnections": "2"
             }
           }
         ]
