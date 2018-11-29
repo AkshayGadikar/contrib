@@ -24,7 +24,7 @@ type WSProxy struct {
 	clientConn     *websocket.Conn
 }
 
-var activityMd = activity.ToMetadata(&Settings{}, &Input{}, &Output{})
+var activityMd = activity.ToMetadata(&Settings{}, &Input{})
 
 func New(ctx activity.InitContext) (activity.Activity, error) {
 	s := &Settings{}
@@ -49,10 +49,12 @@ func (a *Activity) Metadata() *activity.Metadata {
 
 // Eval implements api.Activity.Eval - Invokes a web socket operation
 func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
+	input := &Input{}
+	ctx.GetInputObject(input)
 
 	wspService := &WSProxy{
 		serviceName:   ctx.Name(),
-		clientConn:a.settings.WSconnection.(*websocket.Conn),
+		clientConn:input.WSconnection.(*websocket.Conn),
 		backendURL:a.settings.Uri,
 	}
 	if a.settings.maxConnections == ""{

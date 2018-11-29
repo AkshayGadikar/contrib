@@ -1,13 +1,22 @@
 package wsproxy
 
 type Settings struct {
-	WSconnection   interface{}   `md:"wsconnection,required"`
-	Uri            string        `md:"uri,required"`
-	maxConnections string	     `md:"maxconnections"`
+	Uri string `md:"uri,required"`
+	maxConnections string `md:"maxconnections"`
 }
 
 type Input struct {
+	WSconnection interface{} `md:"wsconnection,required"`
 }
 
-type Output struct {
+func (o *Input) ToMap() map[string]interface{} {
+	return map[string]interface{}{
+		"wsconnection":  o.WSconnection,
+	}
+}
+
+func (o *Input) FromMap(values map[string]interface{}) error {
+
+	o.WSconnection = values["wsconnection"]
+	return nil
 }
