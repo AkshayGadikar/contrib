@@ -138,33 +138,35 @@ func newActionHandler(rt *Trigger, handler trigger.Handler, mode string) httprou
 			clientAdd := conn.RemoteAddr()
 			fmt.Println("Upgraded to websocket protocol")
 			fmt.Println("Remote address:", clientAdd)
-
-			for {
-				_, message, err := conn.ReadMessage()
-				if err != nil {
-					fmt.Println("read error", err)
-					break
-				}
-					if mode == "1" {
-						messageToLog := fmt.Sprintf("Received message(%s) from the client", message)
-						fmt.Println(messageToLog)
-					} else {
-						if mode == "2" {
-							out := &Output{}
-							out.QueryParams = make(map[string]string)
-							out.PathParams = make(map[string]string)
-							out.Headers = make(map[string]string)
-							out.Content = message
-							out.WSconnection = conn
-							_, err := handler.Handle(context.Background(), out)
-							if err != nil {
-								fmt.Errorf("Run action  failed [%s] ", err)
-							}
-						}
+			if mode == "1" {
+				for {
+					_, message, err := rt.wsconn.ReadMessage()
+					fmt.Println("Message received :", string(message))
+					if err != nil {
+						fmt.Errorf("error while reading websocket message: %s", err)
+						break
+					}
+					out := &Output{}
+					out.Content = message
+					_, err = handler.Handle(context.Background(), out)
+					if err != nil {
+						fmt.Errorf("Run action  failed [%s] ", err)
 					}
 
+				}
+				rt.logger.Infof("stopped listening to websocket endpoint")
 			}
-			rt.logger.Infof("stopped listening to websocket endpoint")
+			if mode == "2" {
+				out := &Output{}
+				out.QueryParams = make(map[string]string)
+				out.PathParams = make(map[string]string)
+				out.Headers = make(map[string]string)
+				out.WSconnection = conn
+				_, err := handler.Handle(context.Background(), out)
+				if err != nil {
+					fmt.Errorf("Run action  failed [%s] ", err)
+				}
+			}
 		}
 
 	}
