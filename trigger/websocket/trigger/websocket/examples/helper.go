@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"flag"
 	"fmt"
 	"log"
@@ -14,15 +15,16 @@ import (
 
 const (
 	// PingInterval interval between two consecutive client ping calls to server
-	PingInterval time.Duration = 5
+	PingInterval time.Duration = 2
 )
 
 var (
 	server = flag.Bool("server", false, "run the echo websocket server")
 	client = flag.Bool("client", false, "run the client")
-	connections map[*websocket.Conn]bool
+
 	name      = flag.String("name", "CLIENTNAME", "instance name")
-	url       = flag.String("url", "ws://localhost:9096/ws", "server url to connect")
+	url       = flag.String("url", "ws://localhost:8080/ws", "server url to connect")
+	basicauth = flag.String("basicauth", "", "username:password")
 )
 
 func main() {
@@ -31,21 +33,19 @@ func main() {
 		startServer()
 	}
 	if *client {
-		runClient(*name, *url)
+		runClient(*name, *url, *basicauth)
 	}
-}
-
-
-type hub struct {
-	// Registered connections. That's a connection pool
-	connections map[*websocket.Conn]bool
 }
 
 // runClient connects to websocket server,
 // sends message every 2 secs and listens to server connection.
-func runClient(name string, serverURL string) {
+func runClient(name string, serverURL string, basicauth string) {
 	fmt.Println("Dialing", serverURL)
-	conn, _, err := websocket.DefaultDialer.Dial(serverURL, nil)
+	bauthEncoded := base64.StdEncoding.EncodeToString([]byte(basicauth))
+	h := http.Header{
+		"Authorization": {"Basic " + bauthEncoded},
+	}
+	conn, _, err := websocket.DefaultDialer.Dial(serverURL, h)
 	if err != nil {
 		fmt.Println("conn err", err)
 		return
@@ -106,17 +106,15 @@ func runClient(name string, serverURL string) {
 	}
 }
 
-
 // startServer starts echo websocket server on localhost:8080/ws
 func startServer() {
 	middleware := http.NewServeMux()
 	middleware.HandleFunc("/ws", wsHandler)
-	connections = make(map[*websocket.Conn]bool)
 	server := http.Server{
-		Addr:    "localhost:8000",
+		Addr:    "localhost:8080",
 		Handler: middleware,
 	}
-	fmt.Println("Starting server with echo websocket service at ws://localhost:8000/ws")
+	fmt.Println("Starting server with echo websocket service at ws://localhost:8080/ws")
 	log.Fatal(server.ListenAndServe())
 }
 
@@ -125,7 +123,6 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 
 	upgrader := websocket.Upgrader{}
 	conn, err := upgrader.Upgrade(w, r, nil)
-	connections[conn] = true
 	if err != nil {
 		fmt.Println("upgrade error", err)
 	} else {
@@ -141,11 +138,9 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 				fmt.Println("read error", err)
 				break
 			}
-			messageToLog := fmt.Sprintf("Received message(%s) from the client", message)
+			messageToLog := fmt.Sprintf("Received message(%s) from the client(%s)", message, clientAdd)
 			fmt.Println(messageToLog)
-			for c,_ := range connections {
-				c.WriteMessage(mt, []byte(message))
-			}
+			conn.WriteMessage(mt, []byte(message))
 			if err != nil {
 				fmt.Println("write error", err)
 				break
