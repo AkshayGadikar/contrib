@@ -40,7 +40,7 @@ func New(ctx activity.InitContext) (activity.Activity, error) {
 // Activity is an activity that is used to invoke a Web socket operation
 // settings : {wsconnection, url, maxconnections}
 type Activity struct {
-	settings      *Settings
+	settings  *Settings
 }
 
 func (a *Activity) Metadata() *activity.Metadata {
