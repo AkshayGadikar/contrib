@@ -2,7 +2,6 @@ package wsproxy
 
 import (
 	"strconv"
-	"fmt"
 	"github.com/gorilla/websocket"
 	"github.com/project-flogo/core/activity"
 	"github.com/project-flogo/core/data/metadata"
@@ -57,13 +56,9 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		clientConn:input.WSconnection.(*websocket.Conn),
 		backendURL:a.settings.Uri,
 	}
-	fmt.Println("settings", a.settings)
-	fmt.Println("connection:", a.settings.MaxConnections)
 	if a.settings.MaxConnections == ""{
-		fmt.Println("inside")
 		wspService.maxConnections = defaultMaxConnections
 	}else{
-		fmt.Println("inside else")
 		wspService.maxConnections, err = strconv.Atoi(a.settings.MaxConnections)
 		if err != nil{
 			return false,err

@@ -23,7 +23,7 @@ var (
 	client = flag.Bool("client", false, "run the client")
 
 	name      = flag.String("name", "CLIENTNAME", "instance name")
-	url       = flag.String("url", "ws://localhost:8080/ws", "server url to connect")
+	url       = flag.String("url", "ws://localhost:9096/ws", "server url to connect")
 	basicauth = flag.String("basicauth", "", "username:password")
 )
 
