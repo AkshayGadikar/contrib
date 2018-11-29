@@ -57,6 +57,7 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		clientConn:input.WSconnection.(*websocket.Conn),
 		backendURL:a.settings.Uri,
 	}
+	fmt.Println("settings", a.settings)
 	fmt.Println("connection:", a.settings.MaxConnections)
 	if a.settings.MaxConnections == ""{
 		fmt.Println("inside")
