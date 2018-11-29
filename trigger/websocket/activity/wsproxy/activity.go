@@ -57,9 +57,12 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		clientConn:input.WSconnection.(*websocket.Conn),
 		backendURL:a.settings.Uri,
 	}
+	fmt.Println("connection:", a.settings.MaxConnections)
 	if a.settings.MaxConnections == ""{
+		fmt.Println("inside")
 		wspService.maxConnections = defaultMaxConnections
 	}else{
+		fmt.Println("inside else")
 		wspService.maxConnections, err = strconv.Atoi(a.settings.MaxConnections)
 		if err != nil{
 			return false,err
