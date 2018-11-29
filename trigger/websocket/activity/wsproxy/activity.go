@@ -24,7 +24,7 @@ type WSProxy struct {
 	clientConn     *websocket.Conn
 }
 
-var activityMd = activity.ToMetadata(&Settings{}, &Input{})
+var activityMd = activity.ToMetadata(&Settings{}, &Input{}, &Output{})
 
 func New(ctx activity.InitContext) (activity.Activity, error) {
 	s := &Settings{}
@@ -57,10 +57,10 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		clientConn:input.WSconnection.(*websocket.Conn),
 		backendURL:a.settings.Uri,
 	}
-	if a.settings.maxConnections == ""{
+	if a.settings.MaxConnections == ""{
 		wspService.maxConnections = defaultMaxConnections
 	}else{
-		wspService.maxConnections, err = strconv.Atoi(a.settings.maxConnections)
+		wspService.maxConnections, err = strconv.Atoi(a.settings.MaxConnections)
 		if err != nil{
 			return false,err
 		}

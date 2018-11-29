@@ -2,7 +2,7 @@ package wsproxy
 
 type Settings struct {
 	Uri string `md:"uri,required"`
-	maxConnections string `md:"maxconnections"`
+	MaxConnections string `md:"maxconnections"`
 }
 
 type Input struct {
@@ -19,4 +19,7 @@ func (o *Input) FromMap(values map[string]interface{}) error {
 
 	o.WSconnection = values["wsconnection"]
 	return nil
+}
+
+type Output struct{
 }
