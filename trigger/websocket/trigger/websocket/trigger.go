@@ -130,6 +130,7 @@ func newActionHandler(rt *Trigger, handler trigger.Handler, mode string) httprou
 
 		upgrader := websocket.Upgrader{}
 		conn, err := upgrader.Upgrade(w, r, nil)
+		rt.wsconn = conn
 		if err != nil {
 			fmt.Println("upgrade error", err)
 		} else {
