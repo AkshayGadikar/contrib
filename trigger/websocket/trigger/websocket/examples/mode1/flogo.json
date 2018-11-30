@@ -28,7 +28,7 @@
           },
           "actions": [
             {
-              "id": "microgateway:wsproxy"
+              "id": "microgateway:Pets"
             }
           ]
         }
@@ -37,28 +37,43 @@
   ],
   "resources": [
     {
-      "id": "microgateway:wsproxy",
+      "id": "microgateway:Pets",
       "compressed": false,
       "data": {
-        "name": "wsproxy",
+        "name": "Pets",
         "steps": [
           {
-            "service": "ProxyWebSocketService",
-            "input": {
-              "wsconnection": "=$.payload.wsconnection"
-            }
+            "service": "PetStorePets"
           }
         ],
         "responses": [
+          {
+            "if": "$.PetStorePets.outputs.status != 200",
+            "error": true,
+            "output": {
+              "code": 403,
+              "data": {
+                "error": "Failure"
+              }
+            }
+          },
+          {
+            "if": "$.PetStorePets.outputs.status == 200",
+            "error": false,
+            "output": {
+              "code": 200,
+              "data": "=$.PetStorePets.outputs.data"
+            }
+          }
         ],
         "services": [
           {
-            "name": "ProxyWebSocketService",
-            "description": "Web socket service",
-            "ref": "github.com/project-flogo/contrib/trigger/websocket/activity/wsproxy",
+            "name": "PetStorePets",
+            "description": "Get pets by ID from the petstore",
+            "ref": "github.com/project-flogo/contrib/activity/rest",
             "settings": {
-              "uri": "ws://localhost:8080/ws",
-              "maxconnections": "2"
+              "uri": "http://petstore.swagger.io/v2/pet/4",
+              "method": "GET"
             }
           }
         ]
@@ -69,9 +84,9 @@
     {
       "ref": "github.com/project-flogo/microgateway",
       "settings": {
-        "uri": "microgateway:wsproxy"
+        "uri": "microgateway:Pets"
       },
-      "id": "microgateway:wsproxy",
+      "id": "microgateway:Pets",
       "metadata": null
     }
   ]
