@@ -158,15 +158,18 @@ func newActionHandler(rt *Trigger, handler trigger.Handler, mode string) httprou
 				rt.logger.Infof("stopped listening to websocket endpoint")
 			}
 			if mode == "2" {
-				out := &Output{}
-				out.QueryParams = make(map[string]string)
-				out.PathParams = make(map[string]string)
-				out.Headers = make(map[string]string)
-				out.WSconnection = conn
-				_, err := handler.Handle(context.Background(), out)
-				if err != nil {
-					fmt.Errorf("Run action  failed [%s] ", err)
+				for {
+					out := &Output{}
+					out.QueryParams = make(map[string]string)
+					out.PathParams = make(map[string]string)
+					out.Headers = make(map[string]string)
+					out.WSconnection = conn
+					_, err := handler.Handle(context.Background(), out)
+					if err != nil {
+						fmt.Errorf("Run action  failed [%s] ", err)
+					}
 				}
+				rt.logger.Infof("stopped listening to websocket endpoint")
 			}
 		}
 
