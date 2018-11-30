@@ -72,7 +72,7 @@
             "description": "Get pets by ID from the petstore",
             "ref": "github.com/project-flogo/contrib/activity/rest",
             "settings": {
-              "uri": "http://localhost:8080/pets",
+              "uri": "ws://localhost:8080/pets",
               "method": "GET"
             }
           }
