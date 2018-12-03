@@ -75,7 +75,7 @@
             "ref": "github.com/project-flogo/contrib/activity/rest",
             "settings": {
               "uri": "http://localhost:8080/pets",
-              "method": "GET"
+              "method": "PUT"
             }
           }
         ]
