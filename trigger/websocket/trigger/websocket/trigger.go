@@ -11,6 +11,7 @@ import (
 	"github.com/project-flogo/core/data/metadata"
 	"github.com/gorilla/websocket"
 	"github.com/julienschmidt/httprouter"
+	"encoding/json"
 )
 
 
@@ -147,8 +148,10 @@ func newActionHandler(rt *Trigger, handler trigger.Handler, mode string) httprou
 						fmt.Errorf("error while reading websocket message: %s", err)
 						break
 					}
+					var content interface{}
+					_ := json.NewDecoder(message).Decode(&content)
 					out := &Output{}
-					out.Content = string(message)
+					out.Content = content
 					_, err = handler.Handle(context.Background(), out)
 					if err != nil {
 						fmt.Errorf("Run action  failed [%s] ", err)
