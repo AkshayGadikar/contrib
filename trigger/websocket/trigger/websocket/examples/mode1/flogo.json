@@ -62,7 +62,7 @@
             "error": false,
             "output": {
               "code": 200,
-              "data": "=$.PetStorePets.outputs.data"
+              "data": "=$.PetStorePets.outputs.result"
             }
           }
         ],
@@ -72,7 +72,7 @@
             "description": "Get pets by ID from the petstore",
             "ref": "github.com/project-flogo/contrib/activity/rest",
             "settings": {
-              "uri": "ws://localhost:8080/pets",
+              "uri": "http://localhost:8080/pets",
               "method": "GET"
             }
           }

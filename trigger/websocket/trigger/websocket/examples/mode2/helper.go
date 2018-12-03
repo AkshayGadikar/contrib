@@ -114,7 +114,7 @@ func startServer() {
 		Addr:    "localhost:8080",
 		Handler: middleware,
 	}
-	fmt.Println("Starting server with echo websocket service at ws://localhost:8080/ws")
+	fmt.Println("Starting server with echo websocket service at ws://localhost:8080")
 	log.Fatal(server.ListenAndServe())
 }
 

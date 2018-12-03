@@ -40,5 +40,4 @@ type HandlerSettings struct {
 	Method string `md:"method,required,allowed(GET,POST,PUT,PATCH,DELETE)"`
 	Path   string `md:"path,required"`
 	Mode   string `md:"mode,required"`
-	AuthFile string `md:"basicAuthFile"`
 }
