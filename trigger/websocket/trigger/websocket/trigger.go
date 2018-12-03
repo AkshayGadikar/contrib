@@ -12,6 +12,8 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/julienschmidt/httprouter"
 	"encoding/json"
+	"bytes"
+
 )
 
 
@@ -149,7 +151,8 @@ func newActionHandler(rt *Trigger, handler trigger.Handler, mode string) httprou
 						break
 					}
 					var content interface{}
-					_ := json.NewDecoder(message).Decode(&content)
+
+					json.NewDecoder(bytes.NewBuffer(message)).Decode(&content)
 					out := &Output{}
 					out.Content = content
 					_, err = handler.Handle(context.Background(), out)
