@@ -148,7 +148,7 @@ func newActionHandler(rt *Trigger, handler trigger.Handler, mode string) httprou
 						break
 					}
 					out := &Output{}
-					out.Content = message
+					out.Content = string(message)
 					_, err = handler.Handle(context.Background(), out)
 					if err != nil {
 						fmt.Errorf("Run action  failed [%s] ", err)
