@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/base64"
 	"flag"
 	"fmt"
 	"log"
@@ -24,7 +23,6 @@ var (
 
 	name      = flag.String("name", "CLIENTNAME", "instance name")
 	url       = flag.String("url", "ws://localhost:9096/ws", "server url to connect")
-	basicauth = flag.String("basicauth", "", "username:password")
 )
 
 func main() {
@@ -33,19 +31,15 @@ func main() {
 		startServer()
 	}
 	if *client {
-		runClient(*name, *url, *basicauth)
+		runClient(*name, *url)
 	}
 }
 
 // runClient connects to websocket server,
 // sends message every 2 secs and listens to server connection.
-func runClient(name string, serverURL string, basicauth string) {
+func runClient(name string, serverURL string) {
 	fmt.Println("Dialing", serverURL)
-	bauthEncoded := base64.StdEncoding.EncodeToString([]byte(basicauth))
-	h := http.Header{
-		"Authorization": {"Basic " + bauthEncoded},
-	}
-	conn, _, err := websocket.DefaultDialer.Dial(serverURL, h)
+	conn, _, err := websocket.DefaultDialer.Dial(serverURL,nil)
 	if err != nil {
 		fmt.Println("conn err", err)
 		return
@@ -80,7 +74,7 @@ func runClient(name string, serverURL string, basicauth string) {
 			return
 		case t := <-ticker.C:
 		//form message (client name + message count + timestamp)
-			message := fmt.Sprintf("%s-%v-%v", name, count, t.Unix())
+			message := fmt.Sprintf(`{"%s-%v": "%v"}`, name, count, t.Unix())
 			count++
 			fmt.Println("Sending:", message)
 			err := conn.WriteMessage(websocket.TextMessage, []byte(message))
@@ -153,8 +147,9 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 
 func proxyHandler(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
-	fmt.Println("request :",r)
-	_, err := ioutil.ReadAll(r.Body)
+	bytearr, err := ioutil.ReadAll(r.Body)
+	messageToLog := fmt.Sprintf("Received message(%s) from the client", string(bytearr))
+	fmt.Println(messageToLog)
 	if err != nil {
 		panic(err)
 	}

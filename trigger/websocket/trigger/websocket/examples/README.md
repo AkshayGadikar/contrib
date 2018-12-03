@@ -23,8 +23,8 @@ go run helper.go -client -name=<client_name> -url=ws://localhost:9096/ws
 
 
 You should then see something like on server screen after equal intervals
-Message received : CLIENTNAME-1-1543273633 (client name + message count + timestamp)
-The server runs the action and on the tirgger screen you can see 200 (success code)
+Received message({"CLIENT4-4":"1543878185"}) from the client ({client name + message count: timestamp})
+The server runs the action and on the trigger screen you can see 200 (success code)
 
 
 #MODE 2: Receive connection and send it to server
@@ -44,7 +44,8 @@ Run 2nd Client:
 go run helper.go -client -name=<client_name> -url=ws://localhost:9096/ws
 
 You should then see something like on server screen after equal intervals
-Message received : CLIENTNAME-1-1543273633 (client name + message count + timestamp) from all the client connections
+Received message({"CLIENT4-4":"1543878185"}) from the client ({client name + message count: timestamp})
+from all the client connections
 
 Here, maxconnections = 2
 Now you should see that gateway rejecting 3rd client connection.

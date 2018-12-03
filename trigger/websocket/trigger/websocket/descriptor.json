@@ -10,6 +10,26 @@
       "name": "port",
       "type": "integer",
       "required": true
+    },
+    {
+      "name": "enableTLS",
+      "type": "boolean"
+    },
+    {
+      "name": "serverCert",
+      "type": "string"
+    },
+    {
+      "name": "serverKey",
+      "type": "string"
+    },
+    {
+      "name": "enableClientAuth",
+      "type": "string"
+    },
+    {
+      "name": "trustStore",
+      "type": "string"
     }
   ],
   "outputs": [
@@ -49,30 +69,6 @@
       },
       {
         "name": "mode",
-        "type": "string"
-      },
-      {
-        "name": "enableTLS",
-        "type": "boolean"
-      },
-      {
-        "name": "serverCert",
-        "type": "string"
-      },
-      {
-        "name": "serverKey",
-        "type": "string"
-      },
-      {
-        "name": "enableClientAuth",
-        "type": "string"
-      },
-      {
-        "name": "trustStore",
-        "type": "string"
-      },
-      {
-        "name": "basicAuthFile",
         "type": "string"
       }
     ]

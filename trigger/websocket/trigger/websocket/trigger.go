@@ -145,13 +145,11 @@ func newActionHandler(rt *Trigger, handler trigger.Handler, mode string) httprou
 			if mode == "1" {
 				for {
 					_, message, err := rt.wsconn.ReadMessage()
-					fmt.Println("Message received :", string(message))
 					if err != nil {
 						fmt.Errorf("error while reading websocket message: %s", err)
 						break
 					}
 					var content interface{}
-
 					json.NewDecoder(bytes.NewBuffer(message)).Decode(&content)
 					out := &Output{}
 					out.Content = content
