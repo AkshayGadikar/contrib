@@ -23,8 +23,7 @@
           "settings": {
             "method": "GET",
             "path": "/ws",
-            "mode": "1",
-            "basicAuthFile": ""
+            "mode": "1"
           },
           "actions": [
             {
@@ -45,7 +44,7 @@
           {
             "service": "PetStorePets",
             "input": {
-              "content": "=$.payload.content"
+              "content": "=$.payload"
             }
           }
         ],

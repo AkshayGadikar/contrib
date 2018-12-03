@@ -9,7 +9,7 @@ import (
 	"os"
 	"os/signal"
 	"time"
-
+	"io/ioutil"
 	"github.com/gorilla/websocket"
 )
 
