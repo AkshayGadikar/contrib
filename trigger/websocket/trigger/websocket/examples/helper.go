@@ -110,6 +110,7 @@ func runClient(name string, serverURL string, basicauth string) {
 func startServer() {
 	middleware := http.NewServeMux()
 	middleware.HandleFunc("/ws", wsHandler)
+	middleware.HandleFunc("/pets", proxyHandler)
 	server := http.Server{
 		Addr:    "localhost:8080",
 		Handler: middleware,
@@ -149,3 +150,29 @@ func wsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func proxyHandler(w http.ResponseWriter, r *http.Request) {
+	defer r.Body.Close()
+	fmt.Println("request :",r)
+	_, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err)
+	}
+	w.Header().Set("Content-Type", "application/json")
+	_, err = w.Write([]byte(reply))
+	if err != nil {
+		panic(err)
+	}
+}
+
+const reply = `{
+	"id": 1,
+	"category": {
+		"id": 0,
+		"name": "string"
+	},
+	"name": "sally",
+	"photoUrls": ["string"],
+	"tags": [{ "id": 0,"name": "string" }],
+	"status":"available"
+}`

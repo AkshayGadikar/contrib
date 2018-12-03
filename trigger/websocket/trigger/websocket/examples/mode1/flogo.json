@@ -43,7 +43,10 @@
         "name": "Pets",
         "steps": [
           {
-            "service": "PetStorePets"
+            "service": "PetStorePets",
+            "input": {
+              "content": "=$.payload.content"
+            }
           }
         ],
         "responses": [
