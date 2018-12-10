@@ -23,8 +23,7 @@
           "settings": {
             "method": "GET",
             "path": "/ws",
-            "mode": "2",
-            "basicAuthFile": ""
+            "mode": "2"
           },
           "actions": [
             {

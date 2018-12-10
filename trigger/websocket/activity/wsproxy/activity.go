@@ -63,7 +63,6 @@ func (a *Activity) Eval(ctx activity.Context) (done bool, err error) {
 		if err != nil{
 			return false,err
 		}
-
 	}
 
 	// start proxy client as a goroutine
