@@ -1,16 +1,17 @@
 package examples
 
 import (
-	trigger "github.com/project-flogo/contrib/trigger/websocket/trigger/websocket"
+	trigger "github.com/AkshayGadikar/contrib/trigger/websocket/trigger/websocket"
+	"github.com/project-flogo/contrib/activity/rest"
 	"github.com/project-flogo/core/api"
 	"github.com/project-flogo/core/engine"
 	"github.com/project-flogo/microgateway"
-	"github.com/project-flogo/contrib/trigger/websocket/activity/wsproxy"
+	"github.com/AkshayGadikar/contrib/trigger/websocket/activity/wsproxy"
 	microapi "github.com/project-flogo/microgateway/api"
 )
 
 // Example returns an API example
-func Example() (engine.Engine, error) {
+func Example(mode string, maxconn string) (engine.Engine, error) {
 	app := api.NewApp()
 
 	gateway := microapi.New("WSProxy")
@@ -18,10 +19,23 @@ func Example() (engine.Engine, error) {
 	serviceWS := gateway.NewService("WSProxy", &wsproxy.Activity{})
 	serviceWS.SetDescription("Websocket Activity service")
 	serviceWS.AddSetting("uri", "ws://localhost:8080/ws")
-	serviceWS.AddSetting("maxconnections", "2")
+	serviceWS.AddSetting("maxconnections", maxconn)
 
-	step := gateway.NewStep(serviceWS)
-	step.AddInput("wsconnection", "=$.payload.wsconnection")
+	serviceStore := gateway.NewService("PetStorePets", &rest.Activity{})
+	serviceStore.SetDescription("Initiate action to get Petsotre details")
+	serviceStore.AddSetting("uri", "http://localhost:8080/pets")
+	serviceStore.AddSetting("method", "PUT")
+
+	if mode == "2"{
+		step := gateway.NewStep(serviceWS)
+		step.AddInput("wsconnection", "=$.payload.wsconnection")
+	}
+
+	if mode == "1" {
+		step := gateway.NewStep(serviceStore)
+		step.AddInput("content", "=$.payload.content")
+	}
+
 
 	settings, err := gateway.AddResource(app)
 	if err != nil {
@@ -39,7 +53,7 @@ func Example() (engine.Engine, error) {
 	handler, err := trg.NewHandler(&trigger.HandlerSettings{
 		Method: "GET",
 		Path: "/ws",
-		Mode: "2",
+		Mode: mode,
 	})
 	if err != nil {
 		return nil, err

@@ -149,15 +149,7 @@ func newActionHandler(rt *Trigger, handler trigger.Handler, mode string) httprou
 						fmt.Errorf("error while reading websocket message: %s", err)
 						break
 					}
-					var content interface{}
-					json.NewDecoder(bytes.NewBuffer(message)).Decode(&content)
-					out := &Output{}
-					out.Content = content
-					_, err = handler.Handle(context.Background(), out)
-					if err != nil {
-						fmt.Errorf("Run action  failed [%s] ", err)
-					}
-
+					go handlerRoutine(message, handler)
 				}
 				rt.logger.Infof("stopped listening to websocket endpoint")
 			}
@@ -178,4 +170,17 @@ func newActionHandler(rt *Trigger, handler trigger.Handler, mode string) httprou
 		}
 
 	}
+}
+
+func handlerRoutine(message []byte, handler trigger.Handler) error{
+	var content interface{}
+	json.NewDecoder(bytes.NewBuffer(message)).Decode(&content)
+	out := &Output{}
+	out.Content = content
+	_, err := handler.Handle(context.Background(), out)
+	if err != nil {
+		fmt.Errorf("Run action  failed [%s] ", err)
+		return err
+	}
+	return nil
 }
