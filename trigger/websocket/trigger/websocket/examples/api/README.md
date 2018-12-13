@@ -12,7 +12,11 @@ This recipe is a gateway with a service through websocket.
 ## Testing
 Start the gateway:
 ```
-go run main.go <mode> <maxNumberOfConnections>
+go run main.go
+
+Default values:
+mode = 2
+maxconnections = 3
 
 Mode: Values(1 or 2). Mode 1 is for getting message from client and sending it to action. Mode 2 is for streaming messages
 MaxNumberofconnections: This is required for mode 2. It decides the limit for client connections

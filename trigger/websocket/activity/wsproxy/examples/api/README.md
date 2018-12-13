@@ -12,8 +12,7 @@ This recipe is a gateway with a service through websocket.
 ## Testing
 Start the gateway:
 ```
-go run main.go <maxNumberOfConnections>
-MaxNumberofconnections: It decides the limit for client connections
+go run main.go
 ```
 
 Testing
