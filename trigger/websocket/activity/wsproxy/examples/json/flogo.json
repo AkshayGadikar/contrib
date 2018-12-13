@@ -9,7 +9,7 @@
     {
       "name": "WSProxy",
       "id": "MyProxy",
-      "ref": "github.com/project-flogo/contrib/trigger/websocket/activity/wsproxy",
+      "ref": "github.com/AkshayGadikar/contrib/trigger/websocket/trigger/websocket",
       "settings": {
         "port": "9096"
       },
@@ -17,11 +17,12 @@
         {
           "settings": {
             "method": "GET",
-            "path": "/pets/:petId"
+            "path": "/ws",
+            "mode": "2"
           },
           "actions": [
             {
-              "id": "microgateway:Pets"
+              "id": "microgateway:Websocket"
             }
           ]
         }
@@ -30,69 +31,28 @@
   ],
   "resources": [
     {
-      "id": "microgateway:Pets",
+      "id": "microgateway:Websocket",
       "compressed": false,
       "data": {
         "name": "Pets",
         "steps": [
           {
-            "service": "RateLimiter",
+            "service": "WSProxy",
             "input": {
-              "token": "=$.payload.headers.Token"
-            }
-          },
-          {
-            "service": "PetStorePets",
-            "input": {
-              "pathParams": "=$.payload.pathParams"
+              "wsconnection": "=$.payload.wsconnection"
             }
           }
         ],
         "responses": [
-          {
-            "if": "$.RateLimiter.outputs.error == true",
-            "error": true,
-            "output": {
-              "code": 403,
-              "data": {
-                "status": "=$.RateLimiter.outputs.errorMessage"
-              }
-            }
-          },
-          {
-            "if": "$.RateLimiter.outputs.limitReached == true",
-            "error": true,
-            "output": {
-              "code": 403,
-              "data": {
-                "status": "Rate Limit Exceeded - The service you have requested is over the allowed limit."
-              }
-            }
-          },
-          {
-            "error": false,
-            "output": {
-              "code": 200,
-              "data": "=$.PetStorePets.outputs.data"
-            }
-          }
         ],
         "services": [
           {
-            "name": "RateLimiter",
-            "description": "Rate limiter",
-            "ref": "github.com/project-flogo/microgateway/activity/ratelimiter",
+            "name": "WSProxy",
+            "description": "Web Socket Service",
+            "ref": "github.com/AkshayGadikar/contrib/trigger/websocket/activity/wsproxy",
             "settings": {
-              "limit": "3-M"
-            }
-          },
-          {
-            "name": "PetStorePets",
-            "description": "Get pets by ID from the petstore",
-            "ref": "github.com/project-flogo/contrib/activity/rest",
-            "settings": {
-              "uri": "http://petstore.swagger.io/v2/pet/:petId",
-              "method": "GET"
+              "uri": "ws://localhost:8080/ws",
+              "maxconnections": "2"
             }
           }
         ]
@@ -103,9 +63,9 @@
     {
       "ref": "github.com/project-flogo/microgateway",
       "settings": {
-        "uri": "microgateway:Pets"
+        "uri": "microgateway:Websocket"
       },
-      "id": "microgateway:Pets",
+      "id": "microgateway:Websocket",
       "metadata": null
     }
   ]

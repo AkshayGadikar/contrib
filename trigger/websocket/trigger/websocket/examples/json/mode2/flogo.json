@@ -42,7 +42,7 @@
         "name": "wsproxy",
         "steps": [
           {
-            "service": "ProxyWebSocketService",
+            "service": "WSProxy",
             "input": {
               "wsconnection": "=$.payload.wsconnection"
             }
@@ -52,7 +52,7 @@
         ],
         "services": [
           {
-            "name": "ProxyWebSocketService",
+            "name": "WSProxy",
             "description": "Web socket service",
             "ref": "github.com/project-flogo/contrib/trigger/websocket/activity/wsproxy",
             "settings": {
